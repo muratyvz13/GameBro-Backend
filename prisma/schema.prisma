@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model users {
+  user_id         Int           @id @unique @default(autoincrement())
+  user_name       String        @unique @db.VarChar(20)
+  user_mail       String        @unique @db.VarChar(30)
+  user_phone      String?       @db.VarChar(30)
+  user_picture    String?       @db.VarChar(70)
+  user_password   String        @db.VarChar(100)
+  user_activation Boolean       @default(false)
+  user_chips      Int?
+  user_guessScore Float?
+  user_correctGuessPercentage Float?
+  user_correctGuess Float?
+  user_wrongGuess Float?
+}
+model orders {
+  order_id         Int           @id @unique @default(autoincrement())
+  order_picture    String?       @db.VarChar(80)
+  order_chipPrice   Int 
+}
+model settings {
+  setting_id         Int           @id @unique @default(autoincrement())
+  startingChip        Int
+  winPrizeChip        Int
+}
+model shop {
+  product_id         Int           @id @unique @default(autoincrement())
+  product_photo      String        @db.VarChar(120)
+  product_name       String        @db.VarChar(50)
+  product_price      Float
+  product_pricetoChip      Float
+}
+model matches {
+  match_id           Int        @id @unique @default(autoincrement())
+  fixture_id         Int        
+  home_name       String        @db.VarChar(50)
+  home_icon       String        @db.VarChar(70)
+  away_name       String        @db.VarChar(50)
+  away_icon       String        @db.VarChar(70)
+  league_name     String        @db.VarChar(30)
+  country_name    String        @db.VarChar(70)
+  match_category  Int
+  status          String?        @db.VarChar(30)
+  matchTime       DateTime
+  home_score       Int?
+  away_score       Int?
+  alt_ust          Int?   // alt 0  ust 1 
+  karsilikli_gol   Int?    // 1 karşılıklı gol var  , 0 yok
+  winner           Int?
+}
+model predictions {
+  prediction_id   Int        @id @unique @default(autoincrement())
+  user_id         Int
+  match_id        Int           
+  match_category  Int
+  prediction      Int
+}
